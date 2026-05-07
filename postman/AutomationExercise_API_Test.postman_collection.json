@@ -1,0 +1,1823 @@
+{
+  "info": {
+    "_postman_id": "ac680229-d643-4b72-a7bb-67626baa9d4e",
+    "name": "AutomationExercise_API_Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32081740",
+    "_collection_link": "https://go.postman.co/collection/32081740-ac680229-d643-4b72-a7bb-67626baa9d4e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "00_Common",
+      "item": [
+        {
+          "name": "공통_동적 이메일 생성",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const ts = Date.now();\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"user_email\", `test_${ts}@mail.com`);\r",
+                  "pm.collectionVariables.set(\"invalid_email\", `notexist_${ts}@mail.com`);\r",
+                  "pm.collectionVariables.unset(\"created_user_email\");"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"동적 이메일 생성 완료\", function () {\r",
+                  "    pm.expect(pm.collectionVariables.get(\"user_email\")).to.include(\"test_\");\r",
+                  "    pm.expect(pm.collectionVariables.get(\"user_email\")).to.include(\"@mail.com\");\r",
+                  "    pm.expect(pm.collectionVariables.get(\"invalid_email\")).to.include(\"notexist_\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://postman-echo.com/get",
+              "protocol": "https",
+              "host": [
+                "postman-echo",
+                "com"
+              ],
+              "path": [
+                "get"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01_회원가입",
+      "item": [
+        {
+          "name": "API-SU-001 신규 계정 생성 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"responseCode 201 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"User created!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"User created!\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"created_user_email\", pm.collectionVariables.get(\"user_email\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "TestUser",
+                  "type": "text",
+                  "uuid": "20a919a0-c4f3-4783-b138-428c040da46a"
+                },
+                {
+                  "key": "email",
+                  "value": "{{user_email}}",
+                  "type": "text",
+                  "uuid": "7954df27-0359-4d18-b904-87f35eb72acd"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "74ba4c9b-a09d-4e91-afaa-0992db7f1df4"
+                },
+                {
+                  "key": "title",
+                  "value": "Mr",
+                  "type": "text",
+                  "uuid": "308a67a2-4632-4890-8bc0-ef552574aa8a"
+                },
+                {
+                  "key": "birth_date",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "b0f7b0dd-f312-44c4-ac11-aad043513d8f"
+                },
+                {
+                  "key": "birth_month",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "57a89669-2eda-4ca1-b737-11e5f3555248"
+                },
+                {
+                  "key": "birth_year",
+                  "value": "2000",
+                  "type": "text",
+                  "uuid": "bc1937f7-7f5e-4794-924b-719242deb2ac"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Test",
+                  "type": "text",
+                  "uuid": "7ad44ad3-3a43-40b3-aaf3-83139e8e870b"
+                },
+                {
+                  "key": "lastname",
+                  "value": "User",
+                  "type": "text",
+                  "uuid": "2deb69bf-e8af-4345-b7c7-e7335bd30469"
+                },
+                {
+                  "key": "company",
+                  "value": "QA Corp",
+                  "type": "text",
+                  "uuid": "715072b3-4e5c-4167-a6ee-86ff1a0da94a"
+                },
+                {
+                  "key": "address1",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "uuid": "4c3b376c-869c-4ef8-ab7b-71c14703ec27"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text",
+                  "uuid": "31527ad7-0356-40ca-8d2d-a34d0eddbb0f"
+                },
+                {
+                  "key": "state",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "59512988-8c36-4e6f-809c-e6f0df2ff3b3"
+                },
+                {
+                  "key": "city",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "802fb0ba-735a-408b-b800-9fde590e1b93"
+                },
+                {
+                  "key": "zipcode",
+                  "value": "110001",
+                  "type": "text",
+                  "uuid": "32d14758-2382-4591-a542-671fe9844d07"
+                },
+                {
+                  "key": "mobile_number",
+                  "value": "9000000001",
+                  "type": "text",
+                  "uuid": "4615d4f4-2f7c-4866-bec1-bb7030bf7d06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/createAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "createAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-002 이메일 중복으로 계정 생성 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"responseCode 400 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"Email already exist!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Email already exists!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "TestUser",
+                  "type": "text",
+                  "uuid": "20a919a0-c4f3-4783-b138-428c040da46a"
+                },
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "7954df27-0359-4d18-b904-87f35eb72acd"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "74ba4c9b-a09d-4e91-afaa-0992db7f1df4"
+                },
+                {
+                  "key": "title",
+                  "value": "Mr",
+                  "type": "text",
+                  "uuid": "308a67a2-4632-4890-8bc0-ef552574aa8a"
+                },
+                {
+                  "key": "birth_date",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "b0f7b0dd-f312-44c4-ac11-aad043513d8f"
+                },
+                {
+                  "key": "birth_month",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "57a89669-2eda-4ca1-b737-11e5f3555248"
+                },
+                {
+                  "key": "birth_year",
+                  "value": "2000",
+                  "type": "text",
+                  "uuid": "bc1937f7-7f5e-4794-924b-719242deb2ac"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Test",
+                  "type": "text",
+                  "uuid": "7ad44ad3-3a43-40b3-aaf3-83139e8e870b"
+                },
+                {
+                  "key": "lastname",
+                  "value": "User",
+                  "type": "text",
+                  "uuid": "2deb69bf-e8af-4345-b7c7-e7335bd30469"
+                },
+                {
+                  "key": "company",
+                  "value": "QA Corp",
+                  "type": "text",
+                  "uuid": "715072b3-4e5c-4167-a6ee-86ff1a0da94a"
+                },
+                {
+                  "key": "address1",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "uuid": "4c3b376c-869c-4ef8-ab7b-71c14703ec27"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text",
+                  "uuid": "31527ad7-0356-40ca-8d2d-a34d0eddbb0f"
+                },
+                {
+                  "key": "state",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "59512988-8c36-4e6f-809c-e6f0df2ff3b3"
+                },
+                {
+                  "key": "city",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "802fb0ba-735a-408b-b800-9fde590e1b93"
+                },
+                {
+                  "key": "zipcode",
+                  "value": "110001",
+                  "type": "text",
+                  "uuid": "32d14758-2382-4591-a542-671fe9844d07"
+                },
+                {
+                  "key": "mobile_number",
+                  "value": "9000000001",
+                  "type": "text",
+                  "uuid": "4615d4f4-2f7c-4866-bec1-bb7030bf7d06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/createAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "createAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-003 email 필드 누락으로 계정 생성 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"responseCode 400 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(400);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "TestUser",
+                  "type": "text",
+                  "uuid": "20a919a0-c4f3-4783-b138-428c040da46a"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "74ba4c9b-a09d-4e91-afaa-0992db7f1df4"
+                },
+                {
+                  "key": "title",
+                  "value": "Mr",
+                  "type": "text",
+                  "uuid": "308a67a2-4632-4890-8bc0-ef552574aa8a"
+                },
+                {
+                  "key": "birth_date",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "b0f7b0dd-f312-44c4-ac11-aad043513d8f"
+                },
+                {
+                  "key": "birth_month",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "57a89669-2eda-4ca1-b737-11e5f3555248"
+                },
+                {
+                  "key": "birth_year",
+                  "value": "2000",
+                  "type": "text",
+                  "uuid": "bc1937f7-7f5e-4794-924b-719242deb2ac"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Test",
+                  "type": "text",
+                  "uuid": "7ad44ad3-3a43-40b3-aaf3-83139e8e870b"
+                },
+                {
+                  "key": "lastname",
+                  "value": "User",
+                  "type": "text",
+                  "uuid": "2deb69bf-e8af-4345-b7c7-e7335bd30469"
+                },
+                {
+                  "key": "company",
+                  "value": "QA Corp",
+                  "type": "text",
+                  "uuid": "715072b3-4e5c-4167-a6ee-86ff1a0da94a"
+                },
+                {
+                  "key": "address1",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "uuid": "4c3b376c-869c-4ef8-ab7b-71c14703ec27"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text",
+                  "uuid": "31527ad7-0356-40ca-8d2d-a34d0eddbb0f"
+                },
+                {
+                  "key": "state",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "59512988-8c36-4e6f-809c-e6f0df2ff3b3"
+                },
+                {
+                  "key": "city",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "802fb0ba-735a-408b-b800-9fde590e1b93"
+                },
+                {
+                  "key": "zipcode",
+                  "value": "110001",
+                  "type": "text",
+                  "uuid": "32d14758-2382-4591-a542-671fe9844d07"
+                },
+                {
+                  "key": "mobile_number",
+                  "value": "9000000001",
+                  "type": "text",
+                  "uuid": "4615d4f4-2f7c-4866-bec1-bb7030bf7d06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/createAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "createAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-004 password 필드 누락으로 계정 생성 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 400 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"에러 메시지 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.message).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "TestUser",
+                  "type": "text",
+                  "uuid": "20a919a0-c4f3-4783-b138-428c040da46a"
+                },
+                {
+                  "key": "email",
+                  "value": "{{user_email}}",
+                  "type": "text",
+                  "uuid": "7954df27-0359-4d18-b904-87f35eb72acd"
+                },
+                {
+                  "key": "title",
+                  "value": "Mr",
+                  "type": "text",
+                  "uuid": "308a67a2-4632-4890-8bc0-ef552574aa8a"
+                },
+                {
+                  "key": "birth_date",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "b0f7b0dd-f312-44c4-ac11-aad043513d8f"
+                },
+                {
+                  "key": "birth_month",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "57a89669-2eda-4ca1-b737-11e5f3555248"
+                },
+                {
+                  "key": "birth_year",
+                  "value": "2000",
+                  "type": "text",
+                  "uuid": "bc1937f7-7f5e-4794-924b-719242deb2ac"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Test",
+                  "type": "text",
+                  "uuid": "7ad44ad3-3a43-40b3-aaf3-83139e8e870b"
+                },
+                {
+                  "key": "lastname",
+                  "value": "User",
+                  "type": "text",
+                  "uuid": "2deb69bf-e8af-4345-b7c7-e7335bd30469"
+                },
+                {
+                  "key": "company",
+                  "value": "QA Corp",
+                  "type": "text",
+                  "uuid": "715072b3-4e5c-4167-a6ee-86ff1a0da94a"
+                },
+                {
+                  "key": "address1",
+                  "value": "123 Main St",
+                  "type": "text",
+                  "uuid": "4c3b376c-869c-4ef8-ab7b-71c14703ec27"
+                },
+                {
+                  "key": "country",
+                  "value": "India",
+                  "type": "text",
+                  "uuid": "31527ad7-0356-40ca-8d2d-a34d0eddbb0f"
+                },
+                {
+                  "key": "state",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "59512988-8c36-4e6f-809c-e6f0df2ff3b3"
+                },
+                {
+                  "key": "city",
+                  "value": "Delhi",
+                  "type": "text",
+                  "uuid": "802fb0ba-735a-408b-b800-9fde590e1b93"
+                },
+                {
+                  "key": "zipcode",
+                  "value": "110001",
+                  "type": "text",
+                  "uuid": "32d14758-2382-4591-a542-671fe9844d07"
+                },
+                {
+                  "key": "mobile_number",
+                  "value": "9000000001",
+                  "type": "text",
+                  "uuid": "4615d4f4-2f7c-4866-bec1-bb7030bf7d06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/createAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "createAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-005 잘못된 HTTP Method로 호출 시 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 405 확인\", function () {\r",
+                  "    pm.response.to.have.status(405);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test('detail \"Method \\\\\"GET\\\\\" not allowed.\" 확인', function () {\r",
+                  "    pm.expect(jsonData.detail).to.eql('Method \"GET\" not allowed.');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/createAccount?name=TestUser&email={{user_email}}&password={{user_password}}&title=Mr&birth_date=1&birth_month=1&birth_year=2000&firstname=Test&lastname=User&company=QA%20Corp&address1=123%20Main%20St&country=India&state=Delhi&city=Delhi&zipcode=110001&mobile_number=9000000001",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "createAccount"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "TestUser"
+                },
+                {
+                  "key": "email",
+                  "value": "{{user_email}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}"
+                },
+                {
+                  "key": "title",
+                  "value": "Mr"
+                },
+                {
+                  "key": "birth_date",
+                  "value": "1"
+                },
+                {
+                  "key": "birth_month",
+                  "value": "1"
+                },
+                {
+                  "key": "birth_year",
+                  "value": "2000"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Test"
+                },
+                {
+                  "key": "lastname",
+                  "value": "User"
+                },
+                {
+                  "key": "company",
+                  "value": "QA%20Corp"
+                },
+                {
+                  "key": "address1",
+                  "value": "123%20Main%20St"
+                },
+                {
+                  "key": "country",
+                  "value": "India"
+                },
+                {
+                  "key": "state",
+                  "value": "Delhi"
+                },
+                {
+                  "key": "city",
+                  "value": "Delhi"
+                },
+                {
+                  "key": "zipcode",
+                  "value": "110001"
+                },
+                {
+                  "key": "mobile_number",
+                  "value": "9000000001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-006 생성 계정 이메일 기준 상세 조회 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"user 객체 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.user).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"조회된 email 일치 확인\", function () {\r",
+                  "    pm.expect(jsonData.user.email).to.eql(pm.collectionVariables.get(\"created_user_email\"));\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"주요 필드 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.user).to.have.property(\"name\");\r",
+                  "    pm.expect(jsonData.user).to.have.property(\"email\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/getUserDetailByEmail?email={{created_user_email}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "getUserDetailByEmail"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SU-007 존재하지 않는 이메일 조회 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 404 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Account not found with this email, try another email!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Account not found with this email, try another email!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/getUserDetailByEmail?email={{invalid_email}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "getUserDetailByEmail"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "{{invalid_email}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02_로그인/인증",
+      "item": [
+        {
+          "name": "API-LG-001 정상 계정으로 로그인 검증 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"User exists!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"User exists!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "6c842c07-b75f-46bc-9464-0fd2ed3cb162"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "eb4da820-4536-40a0-8e32-3a8cf5e9dcc3"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-LG-002 잘못된 비밀번호로 로그인 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 404 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"User not found!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"User not found!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "236646fd-c77e-4205-82e3-69d61bf67b13"
+                },
+                {
+                  "key": "password",
+                  "value": "{{wrong_password}}",
+                  "type": "text",
+                  "uuid": "b2cad255-fef5-41a9-a1c2-e907a0c0d1b3"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-LG-003 존재하지 않는 이메일로 로그인 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 404 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"User not found!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"User not found!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{invalid_email}}",
+                  "type": "text",
+                  "uuid": "6cd4298a-3cca-4cdd-aafa-8bf8ca6c4503"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "80816a10-a6e8-4359-80a1-ae93a4567316"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-LG-004 email 필드 누락으로 로그인 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 400 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"에러 메시지 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.message).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "00f3661d-a7f6-4511-b1f9-e3be20b2d8f7"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-LG-005 password 필드 누락으로 로그인 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 400 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"에러 메시지 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.message).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "8fee8824-9bf7-4f43-bd2e-6a48c648d1d4"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-LG-006 잘못된 HTTP Method로 로그인 검증 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// const status = pm.response.code;\r",
+                  "// let jsonData = {};\r",
+                  "\r",
+                  "// try {\r",
+                  "//     jsonData = pm.response.json();\r",
+                  "// } catch (e) {\r",
+                  "//     console.log(\"JSON parse fail\", e);\r",
+                  "// }\r",
+                  "\r",
+                  "// console.log(\"status:\", status);\r",
+                  "// console.log(jsonData);\r",
+                  "\r",
+                  "// pm.test(\"HTTP status 확인\", function () {\r",
+                  "//     pm.expect([200, 405]).to.include(status);\r",
+                  "// });\r",
+                  "\r",
+                  "// pm.test(\"Method 오류 응답 존재 확인\", function () {\r",
+                  "//     const hasResponseCode = typeof jsonData.responseCode !== \"undefined\";\r",
+                  "//     const hasMessage = typeof jsonData.message === \"string\";\r",
+                  "//     const hasDetail = typeof jsonData.detail === \"string\";\r",
+                  "//     pm.expect(hasResponseCode || hasMessage || hasDetail).to.eql(true);\r",
+                  "// });\r",
+                  "\r",
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 405 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(405);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('This request method is not supported.\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"This request method is not supported.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "6c842c07-b75f-46bc-9464-0fd2ed3cb162"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "eb4da820-4536-40a0-8e32-3a8cf5e9dcc3"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/verifyLogin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifyLogin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03_상품 검색",
+      "item": [
+        {
+          "name": "API-SR-001 전체 상품 목록 조회 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 배열 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 1건 이상 확인\", function () {\r",
+                  "    pm.expect(jsonData.products.length).to.be.greaterThan(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/productsList",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "productsList"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SR-002 정상 키워드로 상품 검색 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 배열 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"검색 결과 1건 이상 확인\", function () {\r",
+                  "    pm.expect(jsonData.products.length).to.be.greaterThan(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "search_product",
+                  "value": "{{search_keyword_valid}}",
+                  "type": "text",
+                  "uuid": "05a6041d-1da3-42b2-861a-4576e2f8d6c9"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/searchProduct",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "searchProduct"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SR-003 대소문자 다른 키워드로 상품 검색 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 배열 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"검색 결과 1건 이상 확인\", function () {\r",
+                  "    pm.expect(jsonData.products.length).to.be.greaterThan(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "search_product",
+                  "value": "{{search_keyword_case}}",
+                  "type": "text",
+                  "uuid": "b09fcac9-2417-4c49-aa22-cc5106fb11ff"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/searchProduct",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "searchProduct"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SR-004 부분 키워드로 상품 검색 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 배열 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"검색 결과 1건 이상 확인\", function () {\r",
+                  "    pm.expect(jsonData.products.length).to.be.greaterThan(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "search_product",
+                  "value": "{{search_keyword_partial}}",
+                  "type": "text",
+                  "uuid": "ccfcf02a-b0d1-4cab-bf69-304d17451dcf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/searchProduct",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "searchProduct"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SR-005 존재하지 않는 키워드로 상품 검색",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"products 배열 존재 확인\", function () {\r",
+                  "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"검색 결과 0건 확인\", function () {\r",
+                  "    pm.expect(jsonData.products.length).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "search_product",
+                  "value": "{{search_keyword_invalid}}",
+                  "type": "text",
+                  "uuid": "d8abacdb-0728-4ccf-baa4-266ff7fb6eb7"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/searchProduct",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "searchProduct"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-SR-006 잘못된 HTTP Method로 검색 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// const status = pm.response.code;\r",
+                  "// let jsonData = {};\r",
+                  "\r",
+                  "// try {\r",
+                  "//     jsonData = pm.response.json();\r",
+                  "// } catch (e) {\r",
+                  "//     console.log(\"JSON parse fail\", e);\r",
+                  "// }\r",
+                  "\r",
+                  "// console.log(\"status:\", status);\r",
+                  "// console.log(jsonData);\r",
+                  "\r",
+                  "// pm.test(\"HTTP status 확인\", function () {\r",
+                  "//     pm.expect([200, 405]).to.include(status);\r",
+                  "// });\r",
+                  "\r",
+                  "// pm.test(\"Method 오류 응답 존재 확인\", function () {\r",
+                  "//     const hasResponseCode = typeof jsonData.responseCode !== \"undefined\";\r",
+                  "//     const hasMessage = typeof jsonData.message === \"string\";\r",
+                  "//     const hasDetail = typeof jsonData.detail === \"string\";\r",
+                  "//     pm.expect(hasResponseCode || hasMessage || hasDetail).to.eql(true);\r",
+                  "// });\r",
+                  "\r",
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 405 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(405);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('This request method is not supported.\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"This request method is not supported.\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/searchProduct",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "searchProduct"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04_계정 삭제",
+      "item": [
+        {
+          "name": "API-DA-001 잘못된 비밀번호로 계정 삭제 실패",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 404 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('Account not found!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Account not found!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "1d54c4bb-721e-4bff-aef7-02ffa6c2ce75"
+                },
+                {
+                  "key": "password",
+                  "value": "{{wrong_password}}",
+                  "type": "text",
+                  "uuid": "bc3bb71e-009a-4f37-af22-838cd448deac"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deleteAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deleteAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-DA-002 생성 계정 삭제 성공",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 200 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"Account deleted!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Account deleted!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}",
+                  "type": "text",
+                  "uuid": "84f39518-a76f-41f3-a9c3-831fa499b8e4"
+                },
+                {
+                  "key": "password",
+                  "value": "{{user_password}}",
+                  "type": "text",
+                  "uuid": "cb5c56ed-3538-4fe4-9e1d-fd4c6ebeef4f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deleteAccount",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deleteAccount"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API-DA-003 삭제 후 조회 실패 확인",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP status 200 확인\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const jsonData = pm.response.json();\r",
+                  "console.log(jsonData);\r",
+                  "\r",
+                  "pm.test(\"responseCode 404 확인\", function () {\r",
+                  "    pm.expect(jsonData.responseCode).to.eql(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test('message \"Account not found with this email, try another email!\" 확인', function () {\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Account not found with this email, try another email!\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/getUserDetailByEmail?email={{created_user_email}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "getUserDetailByEmail"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "{{created_user_email}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "99_Cleanup",
+      "item": [
+        {
+          "name": "동적 변수 정리",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.unset(\"user_email\");\r",
+                  "pm.collectionVariables.unset(\"invalid_email\");\r",
+                  "pm.collectionVariables.unset(\"created_user_email\");\r",
+                  "\r",
+                  "pm.test(\"동적 변수 정리 완료\", function () {\r",
+                  "    pm.expect(pm.collectionVariables.get(\"user_email\")).to.eql(undefined);\r",
+                  "    pm.expect(pm.collectionVariables.get(\"invalid_email\")).to.eql(undefined);\r",
+                  "    pm.expect(pm.collectionVariables.get(\"created_user_email\")).to.eql(undefined);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://postman-echo.com/get",
+              "protocol": "https",
+              "host": [
+                "postman-echo",
+                "com"
+              ],
+              "path": [
+                "get"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
