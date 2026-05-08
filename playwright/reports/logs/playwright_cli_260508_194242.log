@@ -1,0 +1,87 @@
+﻿
+Running 32 tests using 1 worker
+
+  ok  1 [chromium] › tests\01_auth\01_signup.spec.js:11:7 › 회원가입 UI - Signup 플로우 › UI-SU-001 Signup / Login 페이지 진입 확인 (3.6s)
+  ok  2 [chromium] › tests\01_auth\01_signup.spec.js:28:7 › 회원가입 UI - Signup 플로우 › UI-SU-002 New User Signup 영역 및 입력창 노출 확인 (1.7s)
+  x   3 [chromium] › tests\01_auth\01_signup.spec.js:46:7 › 회원가입 UI - Signup 플로우 › UI-SU-003 신규 회원가입 전체 플로우 성공 (8.7s)
+  ok  4 [chromium] › tests\01_auth\01_signup.spec.js:59:7 › 회원가입 UI - Signup 플로우 › UI-SU-004 회원가입 완료 후 Continue 클릭 시 로그인 상태 유지 확인 (4.6s)
+  ok  5 [chromium] › tests\01_auth\01_signup.spec.js:72:7 › 회원가입 UI - Signup 플로우 › UI-SU-005 기존 이메일로 회원가입 시도 시 중복 에러 메시지 확인 (5.3s)
+  ok  6 [chromium] › tests\01_auth\01_signup.spec.js:94:7 › 회원가입 UI - Signup 플로우 › UI-SU-006 Name 미입력 상태에서 Signup 버튼 클릭 시 진행 차단 확인 (2.4s)
+  ok  7 [chromium] › tests\01_auth\02_login.spec.js:29:7 › 로그인/인증 UI - Login 플로우 › UI-LG-001 Login to your account 섹션 및 입력 폼 노출 확인 (2.2s)
+  ok  8 [chromium] › tests\01_auth\02_login.spec.js:47:7 › 로그인/인증 UI - Login 플로우 › UI-LG-002 올바른 자격증명으로 로그인 성공 확인 (4.5s)
+  ok  9 [chromium] › tests\01_auth\02_login.spec.js:60:7 › 로그인/인증 UI - Login 플로우 › UI-LG-003 잘못된 비밀번호 입력 시 에러 메시지 확인 (4.2s)
+  ok 10 [chromium] › tests\01_auth\02_login.spec.js:73:7 › 로그인/인증 UI - Login 플로우 › UI-LG-004 미등록 이메일 입력 시 에러 메시지 확인 (3.2s)
+  ok 11 [chromium] › tests\01_auth\02_login.spec.js:91:7 › 로그인/인증 UI - Login 플로우 › UI-LG-005 로그인 상태에서 로그아웃 후 로그인 페이지 복귀 확인 (5.1s)
+  ok 12 [chromium] › tests\01_auth\02_login.spec.js:110:7 › 로그인/인증 UI - Login 플로우 › UI-LG-006 이메일·비밀번호 모두 비워 두고 로그인 시도 시 처리 확인 (2.0s)
+  ok 13 [chromium] › tests\02_search\01_search.spec.js:51:7 › 상품 검색 UI - Search 플로우 › UI-SR-001 Products 페이지 진입 확인 (2.5s)
+  ok 14 [chromium] › tests\02_search\01_search.spec.js:62:7 › 상품 검색 UI - Search 플로우 › UI-SR-002 검색 입력창 및 검색 버튼 노출 확인 (2.6s)
+  ok 15 [chromium] › tests\02_search\01_search.spec.js:77:7 › 상품 검색 UI - Search 플로우 › UI-SR-003 유효 검색어로 검색 실행 후 결과 노출 확인 (3.0s)
+  ok 16 [chromium] › tests\02_search\01_search.spec.js:100:7 › 상품 검색 UI - Search 플로우 › UI-SR-004 검색 결과 상품명이 검색어와 연관성 있는지 확인 (3.0s)
+  ok 17 [chromium] › tests\02_search\01_search.spec.js:120:7 › 상품 검색 UI - Search 플로우 › UI-SR-005 관련 없는 키워드로 검색 시 빈 결과 화면 확인 (4.2s)
+  ok 18 [chromium] › tests\02_search\01_search.spec.js:137:7 › 상품 검색 UI - Search 플로우 › UI-SR-006 검색 결과 화면에서 새로고침 후 상태 유지 확인 (5.2s)
+  ok 19 [chromium] › tests\02_search\01_search.spec.js:163:7 › 상품 검색 UI - Search 플로우 › UI-SR-007 검색어 미입력 상태에서 검색 버튼 클릭 시 동작 확인 (3.8s)
+  ok 20 [chromium] › tests\03_cart\01_cart.spec.js:100:7 › 장바구니 UI - Cart 플로우 › UI-CT-001 상품 장바구니 추가 후 Cart 페이지 반영 확인 (3.4s)
+  ok 21 [chromium] › tests\03_cart\01_cart.spec.js:115:7 › 장바구니 UI - Cart 플로우 › UI-CT-002 Add to Cart 클릭 시 완료 모달/안내 노출 확인 (3.6s)
+  ok 22 [chromium] › tests\03_cart\01_cart.spec.js:129:7 › 장바구니 UI - Cart 플로우 › UI-CT-003 Cart 페이지에서 상품명·가격·수량 정보 노출 확인 (3.5s)
+  ok 23 [chromium] › tests\03_cart\01_cart.spec.js:157:7 › 장바구니 UI - Cart 플로우 › UI-CT-004 Cart에서 상품 제거 후 목록에서 삭제 확인 (5.3s)
+  ok 24 [chromium] › tests\03_cart\01_cart.spec.js:176:7 › 장바구니 UI - Cart 플로우 › UI-CT-005 마지막 상품 제거 후 빈 Cart 상태 확인 (5.1s)
+  ok 25 [chromium] › tests\03_cart\01_cart.spec.js:196:7 › 장바구니 UI - Cart 플로우 › UI-CT-006 비로그인 상태에서 추가한 상품이 로그인 후에도 Cart에 유지되는지 확인 (7.9s)
+  ok 26 [chromium] › tests\03_cart\01_cart.spec.js:217:7 › 장바구니 UI - Cart 플로우 › UI-CT-007 검색 결과 상품을 Cart에 추가 후 Cart 반영 확인 (5.8s)
+  ok 27 [chromium] › tests\03_cart\01_cart.spec.js:245:7 › 장바구니 UI - Cart 플로우 › UI-CT-008 Add to Cart 모달에서 Continue Shopping 클릭 시 상품 목록 복귀 확인 (5.3s)
+  ok 28 [chromium] › tests\03_cart\01_cart.spec.js:261:7 › 장바구니 UI - Cart 플로우 › UI-CT-009 Add to Cart 모달에서 View Cart 클릭 시 Cart 페이지 이동 확인 (3.9s)
+  ok 29 [chromium] › tests\03_cart\01_cart.spec.js:276:7 › 장바구니 UI - Cart 플로우 › UI-CT-010 Cart 추가 후 다른 페이지 이동 시 Cart 복귀 후 상품 유지 확인 (4.1s)
+  ok 30 [chromium] › tests\04_account\01_delete-account.spec.js:25:7 › 계정 삭제 UI - Delete Account 플로우 › UI-DA-001 로그인 상태에서 Delete Account 메뉴 노출 확인 (4.2s)
+  ok 31 [chromium] › tests\04_account\01_delete-account.spec.js:42:7 › 계정 삭제 UI - Delete Account 플로우 › UI-DA-002 로그인 상태에서 계정 삭제 성공 확인 (4.2s)
+  ok 32 [chromium] › tests\04_account\01_delete-account.spec.js:57:7 › 계정 삭제 UI - Delete Account 플로우 › UI-DA-003 계정 삭제 후 비로그인 상태 복귀 확인 (5.7s)
+
+
+  1) [chromium] › tests\01_auth\01_signup.spec.js:46:7 › 회원가입 UI - Signup 플로우 › UI-SU-003 신규 회원가입 전체 플로우 성공 › 계정 생성 완료 메시지 및 Continue 버튼 확인 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Account Create!')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for getByText('Account Create!')
+
+
+      52 |
+      53 |     await test.step('계정 생성 완료 메시지 및 Continue 버튼 확인', async () => {
+    > 54 |       await expect(page.getByText('Account Create!')).toBeVisible();
+         |                                                       ^
+      55 |       await expect(page.getByRole('link', { name: 'Continue' })).toBeVisible();
+      56 |     });
+      57 |   });
+        at C:\00_QA\AutomationExercise\playwright\tests\01_auth\01_signup.spec.js:54:55
+        at C:\00_QA\AutomationExercise\playwright\tests\01_auth\01_signup.spec.js:53:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\01_auth-01_signup-회원가입-UI--9bd52-UI-SU-003-신규-회원가입-전체-플로우-성공-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\01_auth-01_signup-회원가입-UI--9bd52-UI-SU-003-신규-회원가입-전체-플로우-성공-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\01_auth-01_signup-회원가입-UI--9bd52-UI-SU-003-신규-회원가입-전체-플로우-성공-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\01_auth-01_signup-회원가입-UI--9bd52-UI-SU-003-신규-회원가입-전체-플로우-성공-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\01_auth-01_signup-회원가입-UI--9bd52-UI-SU-003-신규-회원가입-전체-플로우-성공-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\01_auth\01_signup.spec.js:46:7 › 회원가입 UI - Signup 플로우 › UI-SU-003 신규 회원가입 전체 플로우 성공 
+  31 passed (2.3m)
+
+To open last HTML report run:
+
+  npx playwright show-report
+
