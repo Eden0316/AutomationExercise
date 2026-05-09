@@ -50,11 +50,14 @@ API 테스트는 요청/응답, 상태코드, 응답 메시지, 데이터 체이
 
 ```text
 postman
+├─ reports
+│  ├─ newman_cli_YYMMDD_HHMMSS.log
+│  ├─ newman_result_YYMMDD_HHMMSS.html
+│  └─ newman_result_YYMMDD_HHMMSS.json
 ├─ AutomationExercise_API_Test.postman_collection.json
 ├─ ENV_AutomationExercise_API_Test.postman_environment.json
 ├─ run_newman.ps1
-├─ run_newman.bat
-└─ reports
+└─ run_newman.bat
 ```
 
 ### 주요 검증 내용
