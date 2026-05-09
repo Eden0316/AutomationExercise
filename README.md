@@ -200,6 +200,13 @@ playwright/reports/playwright_report_YYMMDD_HHMMSS/index.html
 playwright/reports/logs/playwright_cli_YYMMDD_HHMMSS.log
 ```
 
+### 샘플 산출물 링크
+
+- [Newman HTML Report](https://eden0316.github.io/AutomationExercise/postman/reports/newman_result_260508_060709.html)
+- [Newman CLI Log](https://eden0316.github.io/AutomationExercise/postman/reports/newman_cli_260508_060709.log)
+- [Playwright HTML Report - Fail 예시 포함](https://eden0316.github.io/AutomationExercise/playwright/reports/playwright_report_260508_194242/)
+- [Playwright CLI Log - Fail 예시 포함](https://eden0316.github.io/AutomationExercise/playwright/reports/logs/playwright_cli_260508_194242.log)
+
 ---
 
 ## 8. 트러블슈팅 및 개선 포인트
