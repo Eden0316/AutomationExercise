@@ -250,6 +250,14 @@ E2E 테스트는 신규 계정을 생성하고 계정 삭제까지 수행하는 
 
 이를 줄이기 위해 Playwright의 `request` fixture를 활용하여 `afterEach` 단계에서 API 기반 계정 삭제를 시도하도록 구성했습니다. 단, UI에서 계정 삭제가 정상 완료된 경우에는 `accountDeletedByUi` 플래그를 통해 API cleanup을 생략해 이중 삭제를 방지했습니다.
 
+### Google Vignette 광고 예외처리 보강
+
+상품 페이지 진입 시뿐 아니라, Products 페이지에서 Home 또는 Cart로 이동하는 과정에서도 `#google_vignette` 광고 레이어가 간헐적으로 노출되어 URL 검증이 실패하는 현상을 확인했습니다.
+
+기존에는 Products 페이지 진입 helper에서만 광고 close 처리를 수행했기 때문에, 다른 네비게이션 단계에서 발생한 광고 간섭을 처리하지 못했습니다.
+
+이를 개선하기 위해 Home/Cart 이동 단계에도 Google Vignette close 처리와 fallback 이동 로직을 추가하여, 외부 광고 레이어로 인한 flaky failure 가능성을 줄였습니다.
+
 ---
 
 ## 9. 회고
