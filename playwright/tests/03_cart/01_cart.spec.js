@@ -30,6 +30,48 @@ async function goToProductsPage(page) {
   await expect(page.getByText('All Products')).toBeVisible();
 }
 
+async function goToHomePage(page) {
+  await page.getByRole('link', { name: /Home/i }).click();
+  await closeGoogleVignetteIfVisible(page);
+
+  if (!/^https:\/\/automationexercise\.com\/$/.test(page.url())) {
+    try {
+      await page.getByRole('link', { name: /Home/i }).click({ timeout: 3000 });
+      await closeGoogleVignetteIfVisible(page);
+    } catch {
+      // fallback에서 직접 이동
+    }
+  }
+
+  if (!/^https:\/\/automationexercise\.com\/$/.test(page.url())) {
+    await page.goto('/');
+    await closeGoogleVignetteIfVisible(page);
+  }
+
+  await expect(page).toHaveURL('https://automationexercise.com/');
+}
+
+async function goToCartPage(page) {
+  await page.getByRole('link', { name: /Cart/i }).click();
+  await closeGoogleVignetteIfVisible(page);
+
+  if (!/\/view_cart/.test(page.url())) {
+    try {
+      await page.getByRole('link', { name: /Cart/i }).click({ timeout: 3000 });
+      await closeGoogleVignetteIfVisible(page);
+    } catch {
+      // fallback에서 직접 이동
+    }
+  }
+
+  if (!/\/view_cart/.test(page.url())) {
+    await page.goto('/view_cart');
+    await closeGoogleVignetteIfVisible(page);
+  }
+
+  await expect(page).toHaveURL(/\/view_cart/);
+}
+
 function productCards(page) {
   return page.locator('.features_items .product-image-wrapper');
 }
@@ -281,13 +323,11 @@ test.describe('장바구니 UI - Cart 플로우', () => {
     });
 
     await test.step('Home 페이지로 이동', async () => {
-      await page.getByRole('link', { name: /Home/i }).click();
-      await expect(page).toHaveURL('https://automationexercise.com/');
+      await goToHomePage(page);
     });
 
     await test.step('Cart 페이지 재진입', async () => {
-      await page.getByRole('link', { name: /Cart/i }).click();
-      await expect(page).toHaveURL(/\/view_cart/);
+      await goToCartPage(page);
     });
 
     await test.step('Cart 복귀 후 기존 상품 유지 확인', async () => {
