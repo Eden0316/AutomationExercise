@@ -1,6 +1,6 @@
 # AutomationExercise QA 통합 실습
 
-Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스트**와 **Playwright UI 테스트**를 함께 구성한 웹서비스 QA 통합 실습 프로젝트입니다.
+Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스트**, **Playwright 기능별 UI 테스트**, **핵심 사용자 흐름 E2E 테스트**를 함께 구성한 웹서비스 QA 통합 실습 프로젝트입니다.
 
 이 프로젝트는 단순 도구 사용 실습이 아니라, 테스트 범위 정의 → TC 설계 → API/UI 자동화 → CLI 로그/HTML Report 산출물 정리 → GitHub Pages 기반 포트폴리오 연결까지 하나의 흐름으로 구성하는 것을 목표로 합니다.
 
@@ -12,9 +12,9 @@ Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스
 |---|---|
 | 대상 서비스 | Automation Exercise |
 | 대상 URL | https://automationexercise.com/ |
-| 테스트 범위 | 회원가입, 로그인/인증, 상품 검색, 장바구니, 계정 삭제 |
+| 테스트 범위 | 회원가입, 로그인/인증, 상품 검색, 장바구니, 계정 삭제, 핵심 사용자 흐름 E2E |
 | API 테스트 도구 | Postman, Newman |
-| UI 테스트 도구 | Playwright |
+| UI/E2E 테스트 도구 | Playwright |
 | 실행 환경 | Windows 11, PowerShell 5, Node.js, npm |
 | 산출물 | Newman Report, Playwright HTML Report, CLI Log |
 
@@ -29,8 +29,11 @@ Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스
 3. 상품 검색
 4. 장바구니 상태 변경
 5. 계정 삭제
+6. E2E 핵심 사용자 흐름
 
 API 테스트는 요청/응답, 상태코드, 응답 메시지, 데이터 체이닝을 중심으로 검증했고, UI 테스트는 실제 사용자 행동 기준의 화면 전환, 입력, 버튼 동작, 상태 반영을 중심으로 검증했습니다.
+
+E2E 테스트는 기능별 UI 테스트를 대체하지 않고, 신규 사용자 회원가입부터 상품 검색, 장바구니 반영, 계정 삭제까지 이어지는 핵심 사용자 흐름의 연결성과 세션 상태 전환을 확인하는 제한적 회귀/스모크 시나리오로 운영했습니다.
 
 ---
 
@@ -41,6 +44,8 @@ API 테스트는 요청/응답, 상태코드, 응답 메시지, 데이터 체이
 - API는 데이터와 응답 규칙 중심, UI는 사용자 흐름과 화면 반응 중심으로 역할을 나누었습니다.
 - 회원가입/로그인/계정 삭제처럼 상태 의존성이 있는 테스트는 동적 이메일을 사용해 재실행 가능하도록 구성했습니다.
 - UI 테스트는 이전 테스트 결과에 의존하지 않고, 각 테스트가 필요한 전제조건을 자체적으로 준비하도록 작성했습니다.
+- E2E 테스트는 기능별 UI 테스트를 대체하지 않고, 기능 간 상태 전달과 사용자 여정의 연속성 확인을 목적으로 분리했습니다.
+- E2E 테스트 중간 실패로 계정 삭제 단계까지 도달하지 못할 수 있으므로, Playwright `request` fixture 기반 `afterEach` API cleanup을 적용했습니다.
 
 ---
 
@@ -87,7 +92,7 @@ API 테스트는 요청 단위 검증과 계정 생명주기 기반 체이닝 �
 
 ---
 
-## 5. Playwright UI 테스트
+## 5. Playwright UI / E2E 테스트
 
 ### 구성
 
@@ -101,8 +106,10 @@ playwright
 │  │  └─ 01_search.spec.js
 │  ├─ 03_cart
 │  │  └─ 01_cart.spec.js
-│  └─ 04_account
-│     └─ 01_delete-account.spec.js
+│  ├─ 04_account
+│  │  └─ 01_delete-account.spec.js
+│  └─ 05_e2e
+│     └─ 01_user-purchase-lite.e2e.spec.js
 ├─ utils
 │  ├─ testData.js
 │  ├─ signupHelper.js
@@ -118,16 +125,19 @@ playwright
 └─ run_playwright_headed.bat
 ```
 
-### UI 테스트 결과
+### UI / E2E 테스트 결과
 
-| 기능 | TC 수 | 결과 |
-|---|---:|---|
-| 회원가입 | 6 | PASS |
-| 로그인/인증 | 6 | PASS |
-| 상품 검색 | 7 | PASS |
-| 장바구니 | 10 | PASS |
-| 계정 삭제 | 3 | PASS |
-| **합계** | **32** | **PASS** |
+| 구분 | 기능 | TC 수 | 결과 |
+|---|---|---:|---|
+| UI | 회원가입 | 6 | PASS |
+| UI | 로그인/인증 | 6 | PASS |
+| UI | 상품 검색 | 7 | PASS |
+| UI | 장바구니 | 10 | PASS |
+| UI | 계정 삭제 | 3 | PASS |
+| E2E | 핵심 사용자 흐름 | 1 | PASS |
+| **합계** |  | **33** | **PASS** |
+
+기능별 UI 테스트 32건 PASS + 핵심 사용자 흐름 E2E 1건 PASS
 
 ### 주요 구현 포인트
 
@@ -138,6 +148,9 @@ playwright
 - Google Vignette 광고 노출 시 `Close` 버튼을 감지해 닫는 예외처리 구현
 - CLI 로그와 Playwright HTML Report를 실행 시점별로 보관
 - Headed / Headless 전체 실행 모두 PASS 확인
+- 기능별 UI 테스트와 별도로, 신규 사용자 생성 → 상품 검색 → 장바구니 반영 → 계정 삭제 흐름을 검증하는 E2E 테스트 1건 추가
+- E2E 중간 실패 시 잔류 계정 정리를 위해 Playwright `request` fixture 기반 `afterEach` API cleanup 적용
+- UI 계정 삭제 성공 시 `accountDeletedByUi` 플래그로 API cleanup을 생략해 이중 삭제 방지
 
 ---
 
@@ -150,7 +163,7 @@ cd C:\00_QA\AutomationExercise\postman
 .\run_newman.bat
 ```
 
-### Playwright UI 테스트 실행
+### Playwright UI / E2E 테스트 실행
 
 기본 Headless 실행:
 
@@ -175,6 +188,14 @@ npx playwright test --headed
 npx playwright show-report
 ```
 
+E2E 테스트만 단독 실행:
+
+```powershell
+cd C:\00_QA\AutomationExercise\playwright
+npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js
+npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --headed
+```
+
 ---
 
 ## 7. 산출물
@@ -185,10 +206,12 @@ npx playwright show-report
 - Newman JSON Report
 - Newman CLI Log
 
-### UI 산출물
+### UI/E2E 산출물
 
-- Playwright HTML Report
+- - Playwright HTML Report
 - Playwright CLI Log
+- 기능별 UI 테스트 32건 실행 결과
+- E2E 테스트 1건 실행 결과 및 test.step 흐름
 - 실패 시 screenshot / video / trace 산출 가능
 
 ### GitHub Pages 연결 기준
@@ -221,6 +244,12 @@ playwright/reports/logs/playwright_cli_YYMMDD_HHMMSS.log
 
 한글 TC명과 ANSI 컬러 코드가 CLI 로그에 깨지거나 제어문자로 남는 문제가 있어, `.bat`의 UTF-8 코드페이지 설정과 PowerShell 로그 저장 시 ANSI 제거 로직을 적용했습니다.
 
+### E2E 테스트 데이터 cleanup
+
+E2E 테스트는 신규 계정을 생성하고 계정 삭제까지 수행하는 흐름이므로, 중간 실패 시 테스트 계정이 잔존할 수 있습니다.
+
+이를 줄이기 위해 Playwright의 `request` fixture를 활용하여 `afterEach` 단계에서 API 기반 계정 삭제를 시도하도록 구성했습니다. 단, UI에서 계정 삭제가 정상 완료된 경우에는 `accountDeletedByUi` 플래그를 통해 API cleanup을 생략해 이중 삭제를 방지했습니다.
+
 ---
 
 ## 9. 회고
@@ -228,6 +257,8 @@ playwright/reports/logs/playwright_cli_YYMMDD_HHMMSS.log
 이번 실습을 통해 웹서비스 QA에서 API 테스트와 UI 테스트를 어떻게 분리하고 연결할 수 있는지 확인했습니다.
 
 특히 단순히 테스트 코드를 작성하는 것에서 끝내지 않고, TC 설계, 실행 스크립트, 로그, HTML Report, GitHub Pages 연결까지 포함해 포트폴리오로 설명 가능한 산출물 구조를 구성했습니다.
+
+또한 E2E 테스트를 무리하게 늘리지 않고 핵심 사용자 흐름 1건만 제한적으로 운영하면서, 기능별 테스트와 E2E 테스트의 역할을 분리했습니다. 이를 통해 테스트 실행 비용과 실패 원인 분석 범위를 관리하면서도, 사용자 여정의 연결성을 확인할 수 있도록 구성했습니다.
 
 ---
 
