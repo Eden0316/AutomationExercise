@@ -20,7 +20,7 @@ test.describe('회원가입 UI - Signup 플로우', () => {
     });
 
     await test.step('Login / Signup 섹션 노출 확인', async () => {
-      await expect(page.getByText('Login to your account')).toBeVisible();
+      await expect(page.getByText('Login to your accounts')).toBeVisible();
       await expect(page.getByText('New User Signup!')).toBeVisible();
     });
   });
