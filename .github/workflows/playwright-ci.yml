@@ -16,13 +16,18 @@ on:
       - ".github/workflows/playwright-ci.yml"
 
 env:
+  CI: true
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   playwright-test:
     name: Run Playwright CI smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
+
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --user 1001
 
     defaults:
       run:
@@ -30,10 +35,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
@@ -41,17 +46,6 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('playwright/package-lock.json') }}
-          restore-keys: |
-            playwright-browsers-${{ runner.os }}-
-
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
 
       - name: Run Playwright CI smoke tests
         run: npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --project=chromium --workers=1 --timeout=60000
@@ -64,7 +58,7 @@ jobs:
 
       - name: Upload Playwright HTML Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-html-report
           path: playwright/playwright-report
@@ -72,7 +66,7 @@ jobs:
 
       - name: Upload Playwright Test Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-test-results
           path: playwright/test-results
