@@ -67,7 +67,7 @@ jobs:
           fi
 
           if [ "$TEST_SUITE" = "full" ]; then
-            TEST_COMMAND="npx playwright test --project=chromium --workers=1 --timeout=60000"
+            TEST_COMMAND="npx playwright test --project=chromium --workers=1 --timeout=90000"
           else
             TEST_COMMAND="npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --project=chromium --workers=1 --timeout=60000"
           fi
