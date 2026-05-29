@@ -2,6 +2,15 @@ name: Playwright CI
 
 on:
   workflow_dispatch:
+    inputs:
+      test_suite:
+        description: "Select Playwright test suite"
+        required: true
+        default: "smoke"
+        type: choice
+        options:
+          - smoke
+          - full
   push:
     branches:
       - main
@@ -21,9 +30,9 @@ env:
 
 jobs:
   playwright-test:
-    name: Run Playwright CI smoke test
+    name: Run Playwright CI
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     container:
       image: mcr.microsoft.com/playwright:v1.59.1-noble
@@ -47,8 +56,30 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Run Playwright CI smoke tests
-        run: npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --project=chromium --workers=1 --timeout=60000
+      - name: Resolve Playwright test suite
+        id: resolve-suite
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TEST_SUITE="${{ github.event.inputs.test_suite }}"
+          else
+            TEST_SUITE="smoke"
+          fi
+
+          if [ "$TEST_SUITE" = "full" ]; then
+            TEST_COMMAND="npx playwright test --project=chromium --workers=1 --timeout=60000"
+          else
+            TEST_COMMAND="npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --project=chromium --workers=1 --timeout=60000"
+          fi
+
+          echo "test_suite=$TEST_SUITE" >> "$GITHUB_OUTPUT"
+          echo "test_command=$TEST_COMMAND" >> "$GITHUB_OUTPUT"
+
+          echo "Resolved test suite: $TEST_SUITE"
+          echo "Resolved test command: $TEST_COMMAND"
+
+      - name: Run Playwright tests
+        run: ${{ steps.resolve-suite.outputs.test_command }}
 
       - name: Ensure artifact directories exist
         if: always()
@@ -60,7 +91,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: playwright-html-report
+          name: playwright-html-report-${{ steps.resolve-suite.outputs.test_suite }}
           path: playwright/playwright-report
           retention-days: 14
 
@@ -68,7 +99,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: playwright-test-results
+          name: playwright-test-results-${{ steps.resolve-suite.outputs.test_suite }}
           path: playwright/test-results
           retention-days: 14
           if-no-files-found: ignore
