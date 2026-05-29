@@ -23,7 +23,7 @@ jobs:
   playwright-test:
     name: Run Playwright CI smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     container:
       image: mcr.microsoft.com/playwright:v1.59.1-noble
@@ -71,3 +71,4 @@ jobs:
           name: playwright-test-results
           path: playwright/test-results
           retention-days: 14
+          if-no-files-found: ignore
