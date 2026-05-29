@@ -208,7 +208,7 @@ npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --headed
 
 ### UI/E2E 산출물
 
-- - Playwright HTML Report
+- Playwright HTML Report
 - Playwright CLI Log
 - 기능별 UI 테스트 32건 실행 결과
 - E2E 테스트 1건 실행 결과 및 test.step 흐름
