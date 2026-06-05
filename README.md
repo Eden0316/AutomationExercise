@@ -1,5 +1,7 @@
 # AutomationExercise QA 통합 실습
 
+![Playwright CI](https://github.com/Eden0316/AutomationExercise/actions/workflows/playwright-ci.yml/badge.svg)
+
 Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스트**, **Playwright 기능별 UI 테스트**, **핵심 사용자 흐름 E2E 테스트**를 함께 구성한 웹서비스 QA 통합 실습 프로젝트입니다.
 
 이 프로젝트는 단순 도구 사용 실습이 아니라, 테스트 범위 정의 → TC 설계 → API/UI 자동화 → CLI 로그/HTML Report 산출물 정리 → GitHub Pages 기반 포트폴리오 연결까지 하나의 흐름으로 구성하는 것을 목표로 합니다.
@@ -16,7 +18,7 @@ Automation Exercise 공개 서비스를 대상으로 **Postman/Newman API 테스
 | API 테스트 도구 | Postman, Newman |
 | UI/E2E 테스트 도구 | Playwright |
 | 실행 환경 | Windows 11, PowerShell 5, Node.js, npm |
-| 산출물 | Newman Report, Playwright HTML Report, CLI Log |
+| 산출물 | Newman Report, Playwright HTML Report, CLI Log, GitHub Actions Artifact |
 
 ---
 
@@ -163,6 +165,22 @@ cd C:\00_QA\AutomationExercise\postman
 .\run_newman.bat
 ```
 
+---
+
+## 7. GitHub Actions CI
+
+Playwright 테스트를 GitHub Actions에서 실행할 수 있도록 CI workflow를 구성했습니다.
+
+- Trigger: `push`, `pull_request`, `workflow_dispatch`
+- Runtime: Playwright 공식 Docker image 기반 실행
+- Test Suite:
+  - `smoke`: 핵심 E2E 시나리오 1건 실행
+  - `full`: 전체 Playwright 테스트 실행
+- Report: Playwright HTML Report artifact 업로드
+- 목적: 로컬 실행뿐 아니라 CI 환경에서도 자동화 테스트 실행 가능 여부 검증
+
+초기에는 `npx playwright install --with-deps chromium` 단계에서 설치 시간이 과도하게 소요되어 timeout이 발생했으나, Playwright 공식 Docker image 기반 실행 구조로 변경하여 브라우저 설치 병목을 제거했습니다.
+
 ### Playwright UI / E2E 테스트 실행
 
 기본 Headless 실행:
@@ -198,7 +216,7 @@ npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --headed
 
 ---
 
-## 7. 산출물
+## 8. 산출물
 
 ### API 산출물
 
@@ -232,7 +250,7 @@ playwright/reports/logs/playwright_cli_YYMMDD_HHMMSS.log
 
 ---
 
-## 8. 트러블슈팅 및 개선 포인트
+## 9. 트러블슈팅 및 개선 포인트
 
 ### Google Vignette 광고 예외처리
 
@@ -260,7 +278,7 @@ E2E 테스트는 신규 계정을 생성하고 계정 삭제까지 수행하는 
 
 ---
 
-## 9. 회고
+## 10. 회고
 
 이번 실습을 통해 웹서비스 QA에서 API 테스트와 UI 테스트를 어떻게 분리하고 연결할 수 있는지 확인했습니다.
 
@@ -270,7 +288,7 @@ E2E 테스트는 신규 계정을 생성하고 계정 삭제까지 수행하는 
 
 ---
 
-## 10. 관련 문서
+## 11. 관련 문서
 
 - 상세 TC 시트: https://docs.google.com/spreadsheets/d/1R6EbpAYBsj402XYRLijOSnZVHxmYSjTSWGgJa7a4qGM
 - 설계 문서: https://www.notion.so/35865480da4280ed90d7f3f46f766b2a
