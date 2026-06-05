@@ -165,22 +165,6 @@ cd C:\00_QA\AutomationExercise\postman
 .\run_newman.bat
 ```
 
----
-
-## 7. GitHub Actions CI
-
-Playwright 테스트를 GitHub Actions에서 실행할 수 있도록 CI workflow를 구성했습니다.
-
-- Trigger: `push`, `pull_request`, `workflow_dispatch`
-- Runtime: Playwright 공식 Docker image 기반 실행
-- Test Suite:
-  - `smoke`: 핵심 E2E 시나리오 1건 실행
-  - `full`: 전체 Playwright 테스트 실행
-- Report: Playwright HTML Report artifact 업로드
-- 목적: 로컬 실행뿐 아니라 CI 환경에서도 자동화 테스트 실행 가능 여부 검증
-
-초기에는 `npx playwright install --with-deps chromium` 단계에서 설치 시간이 과도하게 소요되어 timeout이 발생했으나, Playwright 공식 Docker image 기반 실행 구조로 변경하여 브라우저 설치 병목을 제거했습니다.
-
 ### Playwright UI / E2E 테스트 실행
 
 기본 Headless 실행:
@@ -213,6 +197,22 @@ cd C:\00_QA\AutomationExercise\playwright
 npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js
 npx playwright test tests/05_e2e/01_user-purchase-lite.e2e.spec.js --headed
 ```
+
+---
+
+## 7. GitHub Actions CI
+
+Playwright 테스트를 GitHub Actions에서 실행할 수 있도록 CI workflow를 구성했습니다.
+
+- Trigger: `push`, `pull_request`, `workflow_dispatch`
+- Runtime: Playwright 공식 Docker image 기반 실행
+- Test Suite:
+  - `smoke`: 핵심 E2E 시나리오 1건 실행
+  - `full`: 전체 Playwright 테스트 실행
+- Report: Playwright HTML Report artifact 업로드
+- 목적: 로컬 실행뿐 아니라 CI 환경에서도 자동화 테스트 실행 가능 여부 검증
+
+초기에는 `npx playwright install --with-deps chromium` 단계에서 설치 시간이 과도하게 소요되어 timeout이 발생했으나, Playwright 공식 Docker image 기반 실행 구조로 변경하여 브라우저 설치 병목을 제거했습니다.
 
 ---
 
